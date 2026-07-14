@@ -97,39 +97,60 @@ export default function AdminBlogs() {
       ) : blogs.length === 0 ? (
         <EmptyState message="No blog posts yet." />
       ) : (
-        <div className="admin-card overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-500 border-b border-gray-100">
-                <th className="pb-3">Title</th>
-                <th className="pb-3">Category</th>
-                <th className="pb-3">Status</th>
-                <th className="pb-3">Views</th>
-                <th className="pb-3">Date</th>
-                <th className="pb-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {blogs.map((b) => (
-                <tr key={b._id} className="border-b border-gray-50 last:border-0">
-                  <td className="py-3 font-medium">{b.title}</td>
-                  <td className="py-3 text-gray-500">{b.category}</td>
-                  <td className="py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${b.status === "published" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
-                      {b.status}
-                    </span>
-                  </td>
-                  <td className="py-3 text-gray-500">{b.views}</td>
-                  <td className="py-3 text-gray-500">{format(new Date(b.createdAt), "dd MMM yyyy")}</td>
-                  <td className="py-3 text-right space-x-2">
-                    <button onClick={() => openEdit(b)} className="text-gray-500 hover:text-primary-600"><Pencil className="w-4 h-4 inline" /></button>
-                    <button onClick={() => handleDelete(b._id)} className="text-gray-500 hover:text-red-600"><Trash2 className="w-4 h-4 inline" /></button>
-                  </td>
+        <>
+          <div className="hidden md:block admin-card overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-gray-500 border-b border-gray-100">
+                  <th className="pb-3 px-4">Title</th>
+                  <th className="pb-3 px-4">Category</th>
+                  <th className="pb-3 px-4">Status</th>
+                  <th className="pb-3 px-4">Views</th>
+                  <th className="pb-3 px-4">Date</th>
+                  <th className="pb-3 px-4 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {blogs.map((b) => (
+                  <tr key={b._id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-4 font-medium truncate max-w-xs">{b.title}</td>
+                    <td className="py-4 px-4 text-gray-500">{b.category}</td>
+                    <td className="py-4 px-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${b.status === "published" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
+                        {b.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-gray-500">{b.views}</td>
+                    <td className="py-4 px-4 text-gray-500 whitespace-nowrap">{format(new Date(b.createdAt), "dd MMM yyyy")}</td>
+                    <td className="py-4 px-4 text-right space-x-3">
+                      <button onClick={() => openEdit(b)} className="text-gray-500 hover:text-primary-600 transition-colors"><Pencil className="w-4 h-4 inline" /></button>
+                      <button onClick={() => handleDelete(b._id)} className="text-gray-500 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4 inline" /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="md:hidden space-y-3">
+            {blogs.map((b) => (
+              <div key={b._id} className="admin-card">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="font-semibold text-gray-900 flex-1 line-clamp-2">{b.title}</h3>
+                  <div className="flex gap-2 shrink-0 ml-2">
+                    <button onClick={() => openEdit(b)} className="text-gray-500 hover:text-primary-600"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => handleDelete(b._id)} className="text-gray-500 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-gray-600">Category:</span><span className="font-medium">{b.category}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Status:</span><span className={`px-2 py-0.5 rounded-full text-xs font-medium ${b.status === "published" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>{b.status}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Views:</span><span className="font-medium">{b.views}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Date:</span><span className="font-medium">{format(new Date(b.createdAt), "dd MMM yyyy")}</span></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit Blog" : "Add Blog"} wide>

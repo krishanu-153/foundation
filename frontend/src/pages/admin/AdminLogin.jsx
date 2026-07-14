@@ -55,6 +55,13 @@ export default function AdminLogin() {
               {submitting ? "Logging in..." : "Log In"}
             </button>
           </form>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="btn-outline w-full mt-3"
+          >
+            Go Back Home
+          </button>
         </div>
       </div>
     </div>

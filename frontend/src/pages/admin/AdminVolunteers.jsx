@@ -55,40 +55,63 @@ export default function AdminVolunteers() {
       ) : volunteers.length === 0 ? (
         <EmptyState message="No volunteer applications found." />
       ) : (
-        <div className="admin-card overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-500 border-b border-gray-100">
-                <th className="pb-3">Name</th>
-                <th className="pb-3">Contact</th>
-                <th className="pb-3">Availability</th>
-                <th className="pb-3">Applied</th>
-                <th className="pb-3">Status</th>
-                <th className="pb-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {volunteers.map((v) => (
-                <tr key={v._id} className="border-b border-gray-50 last:border-0">
-                  <td className="py-3">
-                    <button onClick={() => setSelected(v)} className="font-medium hover:text-primary-600">{v.name}</button>
-                  </td>
-                  <td className="py-3 text-gray-500 text-xs">{v.email}<br/>{v.phone}</td>
-                  <td className="py-3 text-gray-500 capitalize">{v.availability}</td>
-                  <td className="py-3 text-gray-500">{format(new Date(v.createdAt), "dd MMM yyyy")}</td>
-                  <td className="py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[v.status]}`}>{v.status}</span>
-                  </td>
-                  <td className="py-3 text-right space-x-2 text-xs">
-                    {v.status !== "approved" && <button onClick={() => updateStatus(v._id, "approved")} className="text-green-600 font-medium">Approve</button>}
-                    {v.status !== "rejected" && <button onClick={() => updateStatus(v._id, "rejected")} className="text-red-600 font-medium">Reject</button>}
-                    {v.status === "approved" && <button onClick={() => updateStatus(v._id, "suspended")} className="text-gray-500 font-medium">Suspend</button>}
-                  </td>
+        <>
+          <div className="hidden md:block admin-card overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-gray-500 border-b border-gray-100">
+                  <th className="pb-3 px-4">Name</th>
+                  <th className="pb-3 px-4">Contact</th>
+                  <th className="pb-3 px-4">Availability</th>
+                  <th className="pb-3 px-4">Applied</th>
+                  <th className="pb-3 px-4">Status</th>
+                  <th className="pb-3 px-4 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {volunteers.map((v) => (
+                  <tr key={v._id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-4">
+                      <button onClick={() => setSelected(v)} className="font-medium hover:text-primary-600 truncate max-w-xs">{v.name}</button>
+                    </td>
+                    <td className="py-4 px-4 text-gray-500 text-xs"><div className="truncate">{v.email}</div><div>{v.phone}</div></td>
+                    <td className="py-4 px-4 text-gray-500 capitalize">{v.availability}</td>
+                    <td className="py-4 px-4 text-gray-500 whitespace-nowrap">{format(new Date(v.createdAt), "dd MMM yyyy")}</td>
+                    <td className="py-4 px-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[v.status]}`}>{v.status}</span>
+                    </td>
+                    <td className="py-4 px-4 text-right space-x-2 text-xs">
+                      {v.status !== "approved" && <button onClick={() => updateStatus(v._id, "approved")} className="text-green-600 font-medium hover:underline">Approve</button>}
+                      {v.status !== "rejected" && <button onClick={() => updateStatus(v._id, "rejected")} className="text-red-600 font-medium hover:underline">Reject</button>}
+                      {v.status === "approved" && <button onClick={() => updateStatus(v._id, "suspended")} className="text-gray-500 font-medium hover:underline">Suspend</button>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="md:hidden space-y-3">
+            {volunteers.map((v) => (
+              <div key={v._id} className="admin-card">
+                <div className="flex justify-between items-start mb-3">
+                  <button onClick={() => setSelected(v)} className="font-semibold text-gray-900 hover:text-primary-600">{v.name}</button>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium shrink-0 ${statusColors[v.status]}`}>{v.status}</span>
+                </div>
+                <div className="space-y-2 text-sm mb-3">
+                  <div className="flex justify-between"><span className="text-gray-600">Email:</span><span className="text-xs truncate max-w-xs">{v.email}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Phone:</span><span>{v.phone}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Availability:</span><span className="capitalize">{v.availability}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600">Applied:</span><span>{format(new Date(v.createdAt), "dd MMM yyyy")}</span></div>
+                </div>
+                <div className="flex gap-2 text-xs">
+                  {v.status !== "approved" && <button onClick={() => updateStatus(v._id, "approved")} className="flex-1 text-green-600 font-medium hover:bg-green-50 py-2 rounded">Approve</button>}
+                  {v.status !== "rejected" && <button onClick={() => updateStatus(v._id, "rejected")} className="flex-1 text-red-600 font-medium hover:bg-red-50 py-2 rounded">Reject</button>}
+                  {v.status === "approved" && <button onClick={() => updateStatus(v._id, "suspended")} className="flex-1 text-gray-600 font-medium hover:bg-gray-100 py-2 rounded">Suspend</button>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       <Modal open={!!selected} onClose={() => setSelected(null)} title="Volunteer Profile">

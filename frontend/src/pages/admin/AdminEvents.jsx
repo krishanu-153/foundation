@@ -118,47 +118,90 @@ export default function AdminEvents() {
       ) : events.length === 0 ? (
         <EmptyState message="No events yet. Create your first one." />
       ) : (
-        <div className="admin-card overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-500 border-b border-gray-100">
-                <th className="pb-3">Event</th>
-                <th className="pb-3">Date</th>
-                <th className="pb-3">Venue</th>
-                <th className="pb-3">Registered</th>
-                <th className="pb-3">Status</th>
-                <th className="pb-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((e) => (
-                <tr key={e._id} className="border-b border-gray-50 last:border-0">
-                  <td className="py-3 font-medium">{e.name}</td>
-                  <td className="py-3 text-gray-500">{format(new Date(e.date), "dd MMM yyyy")}</td>
-                  <td className="py-3 text-gray-500">{e.venue}</td>
-                  <td className="py-3 text-gray-500">{e.registeredUsers.length}{e.registrationLimit ? `/${e.registrationLimit}` : ""}</td>
-                  <td className="py-3">
-                    <select
-                      value={e.status}
-                      onChange={(ev) => handleStatusChange(e._id, ev.target.value)}
-                      className="text-xs border border-gray-200 rounded-lg px-2 py-1"
-                    >
-                      <option value="draft">Draft</option>
-                      <option value="published">Published</option>
-                      <option value="registration_closed">Registration Closed</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </td>
-                  <td className="py-3 text-right space-x-2">
-                    <button onClick={() => openEdit(e)} className="text-gray-500 hover:text-primary-600"><Pencil className="w-4 h-4 inline" /></button>
-                    <button onClick={() => handleDelete(e._id)} className="text-gray-500 hover:text-red-600"><Trash2 className="w-4 h-4 inline" /></button>
-                  </td>
+        <>
+          {/* Desktop Table View */}
+          <div className="hidden md:block admin-card overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-gray-500 border-b border-gray-100">
+                  <th className="pb-3 px-4">Event</th>
+                  <th className="pb-3 px-4">Date</th>
+                  <th className="pb-3 px-4">Venue</th>
+                  <th className="pb-3 px-4">Registered</th>
+                  <th className="pb-3 px-4">Status</th>
+                  <th className="pb-3 px-4 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {events.map((e) => (
+                  <tr key={e._id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
+                    <td className="py-4 px-4 font-medium truncate max-w-xs">{e.name}</td>
+                    <td className="py-4 px-4 text-gray-500 whitespace-nowrap">{format(new Date(e.date), "dd MMM yyyy")}</td>
+                    <td className="py-4 px-4 text-gray-500 truncate max-w-xs">{e.venue}</td>
+                    <td className="py-4 px-4 text-gray-500 text-center">{e.registeredUsers.length}{e.registrationLimit ? `/${e.registrationLimit}` : ""}</td>
+                    <td className="py-4 px-4">
+                      <select
+                        value={e.status}
+                        onChange={(ev) => handleStatusChange(e._id, ev.target.value)}
+                        className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white"
+                      >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                        <option value="registration_closed">Registration Closed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td className="py-4 px-4 text-right space-x-3">
+                      <button onClick={() => openEdit(e)} className="text-gray-500 hover:text-primary-600 transition-colors" title="Edit"><Pencil className="w-4 h-4 inline" /></button>
+                      <button onClick={() => handleDelete(e._id)} className="text-gray-500 hover:text-red-600 transition-colors" title="Delete"><Trash2 className="w-4 h-4 inline" /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {events.map((e) => (
+              <div key={e._id} className="admin-card">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="font-semibold text-gray-900 pr-2 flex-1">{e.name}</h3>
+                  <div className="flex gap-2 shrink-0">
+                    <button onClick={() => openEdit(e)} className="text-gray-500 hover:text-primary-600" title="Edit"><Pencil className="w-4 h-4" /></button>
+                    <button onClick={() => handleDelete(e._id)} className="text-gray-500 hover:text-red-600" title="Delete"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                </div>
+                <div className="space-y-2 text-sm mb-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Date:</span>
+                    <span className="font-medium text-gray-900">{format(new Date(e.date), "dd MMM yyyy")}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Venue:</span>
+                    <span className="font-medium text-gray-900 text-right max-w-xs">{e.venue}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Registered:</span>
+                    <span className="font-medium text-gray-900">{e.registeredUsers.length}{e.registrationLimit ? `/${e.registrationLimit}` : ""}</span>
+                  </div>
+                </div>
+                <select
+                  value={e.status}
+                  onChange={(ev) => handleStatusChange(e._id, ev.target.value)}
+                  className="w-full text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white"
+                >
+                  <option value="draft">Draft</option>
+                  <option value="published">Published</option>
+                  <option value="registration_closed">Registration Closed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? "Edit Event" : "Add Event"} wide>
