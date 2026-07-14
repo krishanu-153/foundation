@@ -32,10 +32,14 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div>
-          <div className="flex items-center gap-2 text-white font-bold text-lg mb-3">
-            <Heart className="w-5 h-5 fill-primary-500 text-primary-500" />
+          <div className="flex items-center gap-2 text-white font-bold text-xl mb-3">
+            <img
+              src="/logo.jpg"
+              alt="Sadhana Foundation Logo"
+              className="h-14 w-14 object-cover rounded-full"
+            />
             Sadhana Foundation
           </div>
           <p className="text-sm text-gray-400">
@@ -103,7 +107,7 @@ export default function Footer() {
               <a href={settings.socialLinks.youtube} target="_blank" rel="noreferrer" className="hover:text-primary-400"><Youtube className="w-5 h-5" /></a>
             )}
           </div>
-          <Link to="/admin/login" className="inline-block mt-6 text-xs text-gray-500 hover:text-gray-300">
+          <Link to="/admin/login" className="inline-block mt-6 text-md text-gray-500 hover:text-gray-300">
             Admin Login
           </Link>
         </div>

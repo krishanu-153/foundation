@@ -45,20 +45,39 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-primary-700 to-accent-700 text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold max-w-3xl leading-tight">
-            {settings?.heroTitle || "Together We Can Change Lives"}
+      <section
+        className="relative min-h-screen bg-cover bg-center flex items-center justify-center"
+        style={{
+          backgroundImage: settings?.heroImage
+            ? `url(${settings.heroImage})`
+            : "linear-gradient(to right, #1e3a8a, #7c3aed)",
+        }}
+      >
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-5xl text-center px-6">
+          <h1 className="text-5xl md:text-7xl font-bold text-white">
+            {settings?.heroTitle}
           </h1>
-          <p className="mt-6 text-lg text-white/90 max-w-xl">
-            {settings?.heroSubtitle ||
-              "Join Sadhana Foundation in building a better tomorrow through education, health, and community welfare."}
+
+          <p className="mt-6 text-xl text-gray-200">
+            {settings?.heroSubtitle}
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link to="/donate" className="btn bg-white text-primary-700 hover:bg-gray-100">
+
+          <div className="mt-8 flex justify-center gap-4">
+            <Link
+              to="/donate"
+              className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full"
+            >
               Donate Now
             </Link>
-            <Link to="/volunteer" className="btn border-2 border-white text-white hover:bg-white/10">
+
+            <Link
+              to="/volunteer"
+              className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-full"
+            >
               Become a Volunteer
             </Link>
           </div>
