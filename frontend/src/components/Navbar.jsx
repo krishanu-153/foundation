@@ -22,9 +22,13 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-stone-100 bg-white/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[4.75rem]">
-          <Link to="/" className="flex items-center gap-2.5 font-bold text-lg text-primary-700 tracking-tight">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary-600 text-white shadow-lg shadow-primary-600/25"><Heart className="w-5 h-5 fill-current" /></span>
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="flex items-center gap-3 font-bold text-xl text-primary-700">
+            <img
+              src="/ngo.png"
+              alt="Sadhana Foundation Logo"
+              className="h-12 w-12 object-cover"
+            />
             <span>Sadhana Foundation</span>
           </Link>
 
