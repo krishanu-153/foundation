@@ -38,6 +38,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Sadhana Foundation API is running 🚀",
+  });
+});
 app.get("/api/health", (req, res) => res.json({ success: true, message: "API is running" }));
 
 // Public/user-facing auth
