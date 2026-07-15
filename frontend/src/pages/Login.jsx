@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
@@ -9,6 +10,7 @@ export default function Login() {
   const location = useLocation();
   const [form, setForm] = useState({ email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +36,12 @@ export default function Login() {
         </div>
         <div>
           <label className="label">Password</label>
-          <input required type="password" className="input" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          <div className="relative">
+            <input required type={showPassword ? "text" : "password"} className="input pr-11" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-primary-600" aria-label={showPassword ? "Hide password" : "Show password"}>
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
         </div>
         <div className="text-right">
           <Link to="/forgot-password" className="text-sm text-primary-600">Forgot password?</Link>

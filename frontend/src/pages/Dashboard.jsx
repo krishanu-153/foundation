@@ -15,7 +15,7 @@ const statusColors = {
 };
 
 export default function Dashboard() {
-  const { user, logoutUser } = useAuth();
+  const { user, setUser, logoutUser } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileForm, setProfileForm] = useState({ name: user?.name || "", phone: "" });
@@ -30,7 +30,8 @@ export default function Dashboard() {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     try {
-      await api.put("/users/profile", profileForm);
+      const { data } = await api.put("/users/profile", profileForm);
+      setUser(data.user);
       toast.success("Profile updated");
     } catch (err) {
       toast.error(err.message);
@@ -43,7 +44,9 @@ export default function Dashboard() {
     <div className="section">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold">Hi, {user?.name?.split(" ")[0]} 👋</h1>
+          <h1 className="text-2xl font-bold">
+            Hi, <span className="notranslate" translate="no">{user?.name?.split(" ")[0]}</span> 👋
+          </h1>
           <p className="text-gray-500 text-sm">Here's an overview of your activity.</p>
         </div>
         <button onClick={logoutUser} className="btn-outline text-sm flex items-center gap-2">
@@ -111,7 +114,7 @@ export default function Dashboard() {
         <form onSubmit={handleProfileUpdate} className="card p-6 space-y-4">
           <div>
             <label className="label">Full Name</label>
-            <input className="input" value={profileForm.name} onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })} />
+            <input className="input notranslate" translate="no" value={profileForm.name} onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })} />
           </div>
           <div>
             <label className="label">Phone</label>

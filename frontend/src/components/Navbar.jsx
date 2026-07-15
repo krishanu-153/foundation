@@ -55,7 +55,7 @@ export default function Navbar() {
               className="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-primary-600"
             >
               <User className="w-4 h-4" />
-              {user ? user.name.split(" ")[0] : "Login"}
+              {user ? <span className="notranslate" translate="no">{user.name.split(" ")[0]}</span> : "Login"}
             </Link>
             <Link to="/donate" className="btn-primary text-sm px-4 py-2.5">
               Donate <ArrowRight className="w-4 h-4" />
