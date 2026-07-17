@@ -80,7 +80,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 });
 
 //@desc Verify Email
-//@ route GET/api//verify-email/:token
+//@route GET/api//verify-email/:token
 //@access public
 export const verifyEmail = asyncHandler(async (req, res) => {
   const hashedToken = crypto
@@ -90,28 +90,13 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({
     emailVerificationToken: hashedToken,
+    emailVerificationExpire: { $gt: Date.now() },
   });
 
   if (!user) {
-    return res.status(200).json({
-      success: true,
-      message: "Email already verified or verification link already used.",
-    });
-  }
-
-  // Check expiry
-  if (user.emailVerificationExpire < Date.now()) {
     return res.status(400).json({
       success: false,
-      message: "Verification link has expired.",
-    });
-  }
-
-  // Already verified
-  if (user.isEmailVerified) {
-    return res.status(200).json({
-      success: true,
-      message: "Email already verified.",
+      message: "Invalid or expired verification link.",
     });
   }
 
@@ -121,12 +106,11 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: "Email verified successfully.",
   });
 });
-
 // @desc    Forgot password - send reset link
 // @route   POST /api/auth/forgot-password
 // @access  Public

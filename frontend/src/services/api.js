@@ -1,9 +1,12 @@
 import axios from "axios";
 
+// console.log("MODE:", import.meta.env.MODE);
+// console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
+// console.log("ALL ENV:", import.meta.env);
+
 const api = axios.create({
   // In production Vercel uses VITE_API_URL; locally Vite proxies /api to port 5000.
   baseURL: import.meta.env.VITE_API_URL || "/api",
-  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
