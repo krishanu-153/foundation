@@ -25,6 +25,7 @@ export const sendEmail = async ({ to, subject, html, text }) => {
     await transporter.verify();
 
     console.log("SMTP VERIFIED");
+    console.log("EMAIL_FROM:", process.env.EMAIL_FROM);
     
     const info = await transporter.sendMail({
       from: process.env.EMAIL_FROM,
@@ -40,5 +41,6 @@ export const sendEmail = async ({ to, subject, html, text }) => {
   } catch (err) {
     console.error("EMAIL ERROR:");
     console.error(err);
+    throw err;
   }
 };
