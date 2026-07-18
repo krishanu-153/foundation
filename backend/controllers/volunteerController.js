@@ -83,11 +83,41 @@ export const updateVolunteerStatus = asyncHandler(async (req, res) => {
       isVolunteer: status === "approved",
     });
   }
+  
+  const dashboardUrl = `${process.env.CLIENT_URL}/login`;
 
   await sendEmail({
     to: volunteer.email,
     subject: `Volunteer Application ${status[0].toUpperCase() + status.slice(1)} - Sadhana Foundation`,
-    html: `<p>Dear ${volunteer.name},</p><p>Your volunteer application status has been updated to: <b>${status}</b>.</p>`,
+    html: `
+      <p>Dear ${volunteer.name},</p>
+
+      <p>Your volunteer application has been <strong>${status}</strong>.</p>
+
+      <p>
+        You can also log in to your account to view your latest volunteer status
+        and future updates.
+      </p>
+
+      <p>
+        <a href="${dashboardUrl}">
+          Log in to Sadhana Foundation
+        </a>
+      </p>
+
+      <p>Regards,<br>Sadhana Foundation Team</p>
+    `,
+    text: `
+  Dear ${volunteer.name},
+
+  Your volunteer application has been ${status}.
+
+  Log in to your account to view your latest volunteer status:
+  ${dashboardUrl}
+
+  Regards,
+  Sadhana Foundation Team
+  `,
   });
 
   res.json({ success: true, volunteer });
