@@ -16,8 +16,8 @@ export default function Register() {
     setSubmitting(true);
     try {
       const data = await registerUser(form);
-      toast.success(data.message || "Registered successfully!");
-      navigate("/dashboard");
+      toast.success(data.message || "Registered successfully! Please Log in...");
+      navigate("/login");
     } catch (err) {
       toast.error(err.message);
     } finally {

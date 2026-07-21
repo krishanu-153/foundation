@@ -41,10 +41,9 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+  // ✅ Modified
   const registerUser = async (payload) => {
     const { data } = await api.post("/auth/register", payload);
-    localStorage.setItem("userToken", data.token);
-    setUser(data.user);
     return data;
   };
 
@@ -60,10 +59,6 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  // const logoutAdmin = () => {
-  //   localStorage.removeItem("adminToken");
-  //   setAdmin(null);
-  // };
   const logoutAdmin = async () => {
     try {
       await api.post("/admin/auth/logout");

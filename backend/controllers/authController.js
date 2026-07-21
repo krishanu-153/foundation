@@ -16,31 +16,17 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists with this email");
   }
 
-  const emailVerificationToken = crypto.randomBytes(32).toString("hex");
-
-  const user = await User.create({
+  await User.create({
     name,
     email,
     password,
     phone,
-    emailVerificationToken: crypto
-      .createHash("sha256")
-      .update(emailVerificationToken)
-      .digest("hex"),
-    emailVerificationExpire: Date.now() + 24 * 60 * 60 * 1000,
-  });
-
-  const verifyUrl = `${process.env.CLIENT_URL}/verify-email/${emailVerificationToken}`;
-  await sendEmail({
-    to: user.email,
-    subject: "Verify your email - Sadhana Foundation",
-    html: `<p>Hi ${user.name},</p><p>Please verify your email by clicking the link below:</p><a href="${verifyUrl}">${verifyUrl}</a>`,
+    isEmailVerified: true,
   });
 
   res.status(201).json({
     success: true,
-    message:
-      "Registration successful. Please check your email to verify your account.",
+    message: "Registration successful.",
   });
 });
 
@@ -95,7 +81,7 @@ export const verifyEmail = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(200).json({
       success: true,
-      message: "Email already verified or verification link already used.",
+      message: "Email already verified.",
     });
   }
 
